@@ -2,12 +2,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-file_name = "relaxing_sitting.log"
+PATH = "logs/"
+file_name = PATH+"leftStandingTouch.log"
+print("got the file")
 filename, file_extension = os.path.splitext(file_name)
+print("read the title")
 data = pd.read_csv(file_name,sep=",", header = None)
+print ("parsed as .csv file")
 data.columns = ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"]
 
-
+print("make it till line its time to print")
 figure = plt.figure()
 plt.title(filename)
 plt.xlabel("index")
