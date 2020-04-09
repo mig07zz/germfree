@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+#adding something
 PATH = "logs/"
 file_name = PATH+"leftStandingTouch.log"
 print("got the file")
