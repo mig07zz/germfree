@@ -35,8 +35,18 @@ def onpick(event):
     fig.canvas.draw()
 
 
+<<<<<<< HEAD
 PATH = "logs/"
 file_name = PATH+"L_St_idle_00_2004101453.log"
+=======
+<<<<<<< HEAD
+PATH = "logs/"
+file_name = PATH+"L_St_idle_00_2004101453.log"
+=======
+PATH = "peymans_log/"
+file_name = PATH+"L_St_idle-face_00_2004101515.log"
+>>>>>>> 4fa8dd779deeca37c17077ac339dcb8b68346335
+>>>>>>> master
 print("got the file")
 filename, file_extension = os.path.splitext(file_name)
 print("read the title")
