@@ -2,6 +2,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+# """
+# Format for naming log files: hand_positionMotion_repetitions_timestamp
+
+# hand values: L or R, for left and right respectively
+# position : standing (St), sitting (Si), sleeping (Sl)
+# motion: variable depends on start and end of motion of hand
+# repetition: a number between 00 and 99 
+# time stamp: YYMMDDHHmm , two digits for year, month , day , hour, minutes
+
+# example. left hand, standing, hands hanging on the side and ending touching face, done 5 times, on april 10th 2020 at 1:23pm
+
+#         file name : L_St_handsHanging-Face_05_2004101323.log
+
+# """
+
+
 
 def onpick(event):
     # on the pick event, find the orig line corresponding to the
@@ -20,7 +36,7 @@ def onpick(event):
 
 
 PATH = "logs/"
-file_name = PATH+"leftStandingTouch.log"
+file_name = PATH+"L_St_idle_00_2004101453.log"
 print("got the file")
 filename, file_extension = os.path.splitext(file_name)
 print("read the title")
@@ -94,4 +110,5 @@ for legline, origline in zip(leg.get_lines(), lines):
 
 fig.canvas.mpl_connect('pick_event', onpick)
 
+print ("where is my plot")
 plt.show()
