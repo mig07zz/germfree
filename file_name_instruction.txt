@@ -1,0 +1,13 @@
+Hand: L =left, R=Right
+position: St = standing, Si= sitting, Sl=sleeping
+motion: idle, idle-face, idle-chest, idle-hair, idle-raise, idle-stretch
+repetion: number of times the same motion repeated DD
+time stamp = YYMMDDhhmm military time
+
+example = L_St_idle-face_06_2004101438.log
+
+test format:
+	3 seconds of idle time
+	do motions at least 5 times, or 20 sec
+	3 seconds of idle in between
+	3 seconds of idle time
