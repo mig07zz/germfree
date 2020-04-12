@@ -36,8 +36,13 @@ def onpick(event):
 
 
 
-PATH = "logs/"
-file_name = PATH+"L_St_idle_00_2004101453.log"
+
+# PATH = "logs/"
+# file_name = PATH+"L_St_idle_00_2004101453.log"
+
+# PATH = "peymans_log/"
+# file_name = PATH+"L_St_idle-stretch_05_2004102003.log"
+
 
 print("got the file")
 filename, file_extension = os.path.splitext(file_name)
