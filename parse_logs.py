@@ -19,103 +19,77 @@ import os
 
 
 
-def onpick(event):
-    # on the pick event, find the orig line corresponding to the
-    # legend proxy line, and toggle the visibility
-    legline = event.artist
-    origline = lined[legline]
-    vis = not origline.get_visible()
-    origline.set_visible(vis)
-    # Change the alpha on the line in the legend so we can see what lines
-    # have been toggled
-    if vis:
-        legline.set_alpha(1.0)
-    else:
-        legline.set_alpha(0.2)
-    fig.canvas.draw()
 
 
 
 
-# PATH = "logs/"
-# file_name = PATH+"L_St_idle_00_2004101453.log"
+class log_parser():
+    # def __init__(self):
 
-# PATH = "peymans_log/"
-# file_name = PATH+"L_St_idle-stretch_05_2004102003.log"
+    def read_data_set(self,path):
+        file_name, file_extension = os.path.splitext(path)
+        data = pd.read_csv(path,sep=",", header = None)
+        data.columns = ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"]
+        return data
 
+    def interactive_plot(self,data,title="something"):
+        self.fig, ax = plt.subplots()
+        plt.title(title)
+        plt.xlabel("index")
+        plt.ylabel("accelerometer data")
+        # accelerometer data
+        acc_x, = plt.plot(data.index,data['acc_x'],color='red',label='acc_x')
+        acc_y, =plt.plot(data.index,data['acc_y'],color='blue',label='acc_y')
+        acc_z, =plt.plot(data.index,data['acc_z'],color='green',label='acc_z')
 
-print("got the file")
-filename, file_extension = os.path.splitext(file_name)
-print("read the title")
-data = pd.read_csv(file_name,sep=",", header = None)
-print ("parsed as .csv filessss")
-data.columns = ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"]
+        # groscope data
+        gyro_x, =plt.plot(data.index,data['gyro_x'],color='black',label='gyro_x')
+        gyro_y, =plt.plot(data.index,data['gyro_y'],color='purple',label='gyro_y')
+        gyro_z, =plt.plot(data.index,data['gyro_z'],color='brown',label='gyro_z')
 
-print("make it till line its time to print")
-fig, ax = plt.subplots()
-plt.title(filename)
-plt.xlabel("index")
-plt.ylabel("accelerometer data")
-acc_x, = plt.plot(data.index,data['acc_x'],color='red',label='acc_x')
-acc_y, =plt.plot(data.index,data['acc_y'],color='blue',label='acc_y')
-acc_z, =plt.plot(data.index,data['acc_z'],color='green',label='acc_z')
-# plt.legend()
+        #adding a legend for every data set
+        leg = ax.legend(loc='upper left', fancybox=True, shadow=True)
+        leg.get_frame().set_alpha(0.4)
 
-# fig, ax = plt.subplots()
-# plt.title(filename)
-# plt.xlabel("index")
-# plt.ylabel("Gyroscope data")
-gyro_x, =plt.plot(data.index,data['gyro_x'],color='black',label='gyro_x')
-gyro_y, =plt.plot(data.index,data['gyro_y'],color='purple',label='gyro_y')
-gyro_z, =plt.plot(data.index,data['gyro_z'],color='brown',label='gyro_z')
+        # we will set up a dict mapping legend line to orig line, and enable
+        # picking on the legend line
+        lines = [acc_x, acc_y,acc_z,gyro_x,gyro_y,gyro_z]
+        self.lined = dict()
+        for legline, origline in zip(leg.get_lines(), lines):
+            legline.set_picker(5)  # 5 pts tolerance
+            self.lined[legline] = origline
+        self.fig.canvas.mpl_connect('pick_event', self.onpick)
 
-leg = ax.legend(loc='upper left', fancybox=True, shadow=True)
-leg.get_frame().set_alpha(0.4)
-# plt.legend()
+        plt.show()
 
-# plt.show()
+    def onpick(self,event):
+        # on the pick event, find the orig line corresponding to the
+        # legend proxy line, and toggle the visibility
+        legline = event.artist
+        origline = self.lined[legline]
+        vis = not origline.get_visible()
+        origline.set_visible(vis)
+        # Change the alpha on the line in the legend so we can see what lines
+        # have been toggled
+        if vis:
+            legline.set_alpha(1.0)
+        else:
+            legline.set_alpha(0.2)
+        self.fig.canvas.draw()
 
-
-# import numpy as np
-# import matplotlib.pyplot as plt
-
-# t = np.arange(0.0, 0.2, 0.1)
-# y1 = 2*np.sin(2*np.pi*t)
-# y2 = 4*np.sin(2*np.pi*2*t)
-
-# fig, ax = plt.subplots()
-# ax.set_title('Click on legend line to toggle line on/off')
-# line1, = ax.plot(t, y1, lw=2, label='1 HZ')
-# line2, = ax.plot(t, y2, lw=2, label='2 HZ')
-# leg = ax.legend(loc='upper left', fancybox=True, shadow=True)
-# leg.get_frame().set_alpha(0.4)
-
-
-# we will set up a dict mapping legend line to orig line, and enable
-# picking on the legend line
-lines = [acc_x, acc_y,acc_z,gyro_x,gyro_y,gyro_z]
-lined = dict()
-for legline, origline in zip(leg.get_lines(), lines):
-    legline.set_picker(5)  # 5 pts tolerance
-    lined[legline] = origline
+    # def data_set_subtraction(self,data1,data2):
 
 
-# def onpick(event):
-#     # on the pick event, find the orig line corresponding to the
-#     # legend proxy line, and toggle the visibility
-#     legline = event.artist
-#     origline = lined[legline]
-#     vis = not origline.get_visible()
-#     origline.set_visible(vis)
-#     # Change the alpha on the line in the legend so we can see what lines
-#     # have been toggled
-#     if vis:
-#         legline.set_alpha(1.0)
-#     else:
-#         legline.set_alpha(0.2)
-#     fig.canvas.draw()
 
-fig.canvas.mpl_connect('pick_event', onpick)
 
-print ("where is my plot")
-plt.show()
+if __name__=="__main__":
+    PATH = "peymans_log/"
+    idle_file_name = PATH+"L_St_idle_00_2004101515.log"
+    idle_fac_file_name = PATH+"L_St_idle-face_05_2004101950.log"
+    data_parser = log_parser()
+
+    idle_data = data_parser.read_data_set(idle_file_name)
+    idle_face_data = data_parser.read_data_set(idle_fac_file_name)
+    subtracted_data = idle_face_data.subtract(idle_data) 
+    print(subtracted_data)
+    data_parser.interactive_plot(subtracted_data)

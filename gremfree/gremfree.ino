@@ -3,6 +3,14 @@
 
 #include <Adafruit_LSM6DSOX.h>
 
+int IDLE_X_acc = -3.9;
+int IDLE_Y_acc =  9;
+int IDLE_Z_acc = 0.4;
+int IDLE_X_GYRO = 0;
+int IDLE_Y_GYRO = 0;
+int IDLE_Z_GYRO = 0;
+
+
 int vibration_motor = 5;
 int timer = 1000;           // The higher the number, the slower the timing.
 Adafruit_LSM6DSOX sox;
@@ -64,19 +72,25 @@ void loop() {
 //    Serial.print(temp.temperature);
 //    Serial.print(",");
 
-    Serial.print(accel.acceleration.x);
-    Serial.print(","); Serial.print(accel.acceleration.y);
-//    if(abs(accel.acceleration.y) > 4 && abs(accel.acceleration.x)>6){
-//      analogWrite(vibration_motor, 250);
-//      delay(timer);
-//      analogWrite(vibration_motor, 0);
-//    }
-    Serial.print(","); Serial.print(accel.acceleration.z);
-    Serial.print(",");
+  
+
+   Serial.print(accel.acceleration.x);
+   Serial.print(","); Serial.print(accel.acceleration.y);
+
+   Serial.print(","); Serial.print(accel.acceleration.z);
+   Serial.print(",");
 
    Serial.print(gyro.gyro.x);
    Serial.print(","); Serial.print(gyro.gyro.y);
    Serial.print(","); Serial.print(gyro.gyro.z);
    Serial.println();
-   delayMicroseconds(10000);
+
+    if((accel.acceleration.y - IDLE_Y_acc) <-6 && (accel.acceleration.x - IDLE_X_acc) <-5 && (gyro.gyro.x- IDLE_X_GYRO) <-0.4 && (gyro.gyro.z- IDLE_Z_GYRO) <-4  && (gyro.gyro.y- IDLE_Y_GYRO) <-0.4 ){
+      analogWrite(vibration_motor, 250);
+      delay(timer);
+      analogWrite(vibration_motor, 0);
+    }
+
+   
+//   delayMicroseconds(10000);
 }
