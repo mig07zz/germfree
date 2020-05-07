@@ -3,6 +3,7 @@
 //included libraries go here
 #include <Adafruit_LSM6DSOX.h>
 #include "FIFO.h"
+#include "analogWrite.h"
 
 //definitions go here
 #define FIFO_S 100
